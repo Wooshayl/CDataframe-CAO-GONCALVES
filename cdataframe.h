@@ -18,5 +18,7 @@ void changement_valeur(Colonne** CDataFrame, int colonne, int ligne, int valeur)
 void afficher_nom_colonne(Colonne** CDataFrame);
 void afficher_nombre_ligne(Colonne** CDataFrame);
 void afficher_nombre_colonne(Colonne** CDataFrame);
+int nombre_cellule_x(Colonne** CDataFrame, int x);
+int nombre_cellule_superieur_x(Colonne** CDataFrame, int x);
 
 #endif //CDDATAFRAME_CDATAFRAME_H
