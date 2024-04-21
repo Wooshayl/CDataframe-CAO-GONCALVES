@@ -14,5 +14,7 @@ void ajouter_colonne_CDataframe(Colonne** CDataFrame);
 void supprimer_colonne_CDataframe(Colonne** CDataFrame);
 void renommer_titre(Colonne** CDataFrame, int position);
 int existence_valeur(Colonne** CDataFrame, int valeur);
+void changement_valeur(Colonne** CDataFrame, int colonne, int ligne, int valeur);
+void afficher_nom_colonne(Colonne** CDataFrame);
 
 #endif //CDDATAFRAME_CDATAFRAME_H
