@@ -11,6 +11,7 @@ typedef struct {
 }Colonne;
 
 Colonne *creer_colonne(char* titre);
+void print_col(Colonne* colonne);
 int inserer_valeur(Colonne* colonne, int valeur);
 
 
