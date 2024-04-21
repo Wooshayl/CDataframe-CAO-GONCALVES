@@ -168,3 +168,28 @@ int nombre_cellule_x(Colonne** CDataFrame, int x){
     }
     return cpt;
 }
+
+int nombre_cellule_superieur_x(Colonne** CDataFrame, int x){
+    int cpt=0;
+    for (int i = 0; i < 100; ++i) {
+        if(CDataFrame[i] != NULL){
+            for (int j = 0; j < CDataFrame[i]->taille_logique; ++j) {
+                if(CDataFrame[i]->donnees[j] > x)
+                    cpt+=1;
+            }
+        }
+    }
+    return cpt;
+}
+int nombre_cellule_inferieur_x(Colonne** CDataFrame, int x){
+    int cpt=0;
+    for (int i = 0; i < 100; ++i) {
+        if(CDataFrame[i] != NULL){
+            for (int j = 0; j < CDataFrame[i]->taille_logique; ++j) {
+                if(CDataFrame[i]->donnees[j] < x)
+                    cpt+=1;
+            }
+        }
+    }
+    return cpt;
+}
