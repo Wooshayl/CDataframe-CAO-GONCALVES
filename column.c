@@ -52,3 +52,9 @@ int nombre_occurence_valeur(Colonne* colonne, int valeur){
         return cpt;
     }
 }
+int retourne_valeur_a_x(Colonne* colonne, int x){
+    if (x > taille_logique){
+        return NULL;
+    }
+    return *(colonne->donnees + x); 
+}
