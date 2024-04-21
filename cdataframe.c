@@ -94,3 +94,23 @@ void affichage_cdatatframe_ligne_utilisateur(Colonne** CDataFrame){
     }
 
 }
+void affichage_cdatatframe_colonne_utilisateur(Colonne** CDataFrame){
+    int valeur_colonne_utilisateur;
+    printf("Jusqu'à quelles colonnes voulez-vous ?");
+    scanf("%d", &valeur_colonne_utilisateur);
+    for (int i = 0; i < valeur_colonne_utilisateur; ++i) {
+        if(CDataFrame[i] != NULL){
+            printf("%s", CDataFrame[i]->titre);
+            for (int j = 0; j < CDataFrame[i]->taille_logique; ++j) {
+                printf("%d", CDataFrame[i]->donnees[j]);
+            }
+            printf("\n");
+        }
+    }
+
+}
+void ajouter_ligne_CDataframe(Colonne** CDataFrame, int valeur){
+    for (int i = 0; i < 100; ++i) {
+        inserer_valeur(CDataFrame[i], valeur);
+    }
+}
