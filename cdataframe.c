@@ -19,3 +19,52 @@ int taille_logique_cdataframe(Colonne** CDataFrame){
         }
     }
 }
+void remplissage_utilisateur_CDataframe(Colonne** CDataFrame){
+    printf("Combien de colonnes voulez-vous ?");
+    int nbr_col, nbr_lig_max=0;
+    scanf("%d", &nbr_col);
+    for(int i =0; i < nbr_col; i++){
+        printf("Quel titre voulez-vous pour la colonne %d : ", i);
+        char titre[100];
+        gets(titre);
+        Colonne *colonne = creer_colonne(titre);
+        CDataFrame[i] = colonne;
+    }
+    for (int i = 0; i < nbr_col; ++i) {
+        printf("Combien de données voulez-vous dans la colonne %d ? ", i);
+        int nbr_lig;
+        scanf("%d", &nbr_lig);
+        if(nbr_lig>nbr_lig_max) {
+            nbr_lig_max = nbr_lig;
+        }
+        for (int j = 0; j < nbr_lig; ++j) {
+            printf("Entrez une valeur : ");
+            int valeur_ligne;
+            scanf("%d", &valeur_ligne);
+            inserer_valeur(CDataFrame[i], valeur_ligne);
+        }
+    }
+    for (int i = 0; i < nbr_col; ++i) {
+        if(CDataFrame[i]->taille_logique < nbr_lig_max){
+            for (int j = CDataFrame[i]->taille_logique; j < nbr_lig_max; ++j) {
+                inserer_valeur(CDataFrame[i],0);
+            }
+        }
+
+    }
+}
+
+void remplissage_dure(Colonne** CDataFrame){
+    Colonne *ma_colonne = creer_colonne("Ma colonne");
+    inserer_valeur(ma_colonne, 52);
+    inserer_valeur(ma_colonne, 44);
+    inserer_valeur(ma_colonne, 15);
+    inserer_valeur(ma_colonne, 69);
+    Colonne *ma_colonne2 = creer_colonne("Ma colonne 2");
+    inserer_valeur(ma_colonne2, 52);
+    inserer_valeur(ma_colonne2, 44);
+    inserer_valeur(ma_colonne2, 15);
+    inserer_valeur(ma_colonne2, 69);
+    CDataFrame[0] = ma_colonne;
+    CDataFrame[1] = ma_colonne2;
+}
