@@ -8,5 +8,7 @@ void remplissage_dure(Colonne** CDataFrame);
 void affichage_cdatatframe(Colonne** CDataFrame);
 void affichage_cdatatframe_ligne_utilisateur(Colonne** CDataFrame);
 void affichage_cdatatframe_colonne_utilisateur(Colonne** CDataFrame);
+void ajouter_ligne_CDataframe(Colonne** CDataFrame, int valeur);
+void supprimer_ligne_CDataframe(Colonne** CDataFrame);
 
 #endif //CDDATAFRAME_CDATAFRAME_H
