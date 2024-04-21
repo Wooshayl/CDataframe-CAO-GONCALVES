@@ -38,3 +38,17 @@ void print_col(Colonne* colonne){
         printf("[%d] %d \n", i, *(colonne->donnees + i) 
     }
 }
+int nombre_occurence_valeur(Colonne* colonne, int valeur){
+    int cpt=0;
+    if(colonne == NULL || colonne->donnees == NULL){
+        return 0;
+    }
+    else{
+        for (int i = 0; i<colonne->taille_logique; i++){
+            if(colonne->donnees[i] == valeur){
+                cpt +=1;
+            }
+        }
+        return cpt;
+    }
+}
