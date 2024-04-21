@@ -20,5 +20,6 @@ void afficher_nombre_ligne(Colonne** CDataFrame);
 void afficher_nombre_colonne(Colonne** CDataFrame);
 int nombre_cellule_x(Colonne** CDataFrame, int x);
 int nombre_cellule_superieur_x(Colonne** CDataFrame, int x);
+int nombre_cellule_inferieur_x(Colonne** CDataFrame, int x);
 
 #endif //CDDATAFRAME_CDATAFRAME_H
