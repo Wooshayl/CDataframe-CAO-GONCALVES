@@ -122,3 +122,13 @@ void supprimer_ligne_CDataframe(Colonne** CDataFrame){
 void ajouter_colonne_CDataframe(Colonne** CDataFrame){
     CDataFrame[taille_logique_cdataframe(CDataFrame)] = creer_colonne("Nouvelle colonne");
 }
+void supprimer_colonne_CDataframe(Colonne** CDataFrame){
+    CDataFrame[taille_logique_cdataframe(CDataFrame)-1] = NULL;
+
+}
+void renommer_titre(Colonne** CDataFrame, int position){
+    printf("Chosir un nouveau titre : ");
+    char nouveau_titre[100];
+    gets(nouveau_titre);
+    CDataFrame[position]->titre = nouveau_titre;
+}
