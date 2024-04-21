@@ -33,3 +33,8 @@ int inserer_valeur(Colonne* colonne, int valeur){
         return 1;
     }
 }
+void print_col(Colonne* colonne){
+    for (int i = 0; i < colonne->taille_logique; i++){
+        printf("[%d] %d \n", i, *(colonne->donnees + i) 
+    }
+}
