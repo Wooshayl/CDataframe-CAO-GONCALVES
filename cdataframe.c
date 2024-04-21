@@ -68,3 +68,29 @@ void remplissage_dure(Colonne** CDataFrame){
     CDataFrame[0] = ma_colonne;
     CDataFrame[1] = ma_colonne2;
 }
+void affichage_cdatatframe(Colonne** CDataFrame){
+    for (int i = 0; i < 100; ++i) {
+        if(CDataFrame[i] != NULL){
+            printf("%s", CDataFrame[i]->titre);
+            for (int j = 0; j < CDataFrame[i]->taille_logique; ++j) {
+                printf("%d", CDataFrame[i]->donnees[j]);
+            }
+            printf("\n");
+        }
+    }
+}
+void affichage_cdatatframe_ligne_utilisateur(Colonne** CDataFrame){
+    int valeur_ligne_utilisateur;
+    printf("Jusqu'à quelles lignes voulez-vous ?");
+    scanf("%d", &valeur_ligne_utilisateur);
+    for (int i = 0; i < 100; ++i) {
+        if(CDataFrame[i] != NULL){
+            printf("%s", CDataFrame[i]->titre);
+            for (int j = 0; j < valeur_ligne_utilisateur; ++j) {
+                printf("%d", CDataFrame[i]->donnees[j]);
+            }
+            printf("\n");
+        }
+    }
+
+}
