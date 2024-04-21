@@ -132,3 +132,15 @@ void renommer_titre(Colonne** CDataFrame, int position){
     gets(nouveau_titre);
     CDataFrame[position]->titre = nouveau_titre;
 }
+int existence_valeur(Colonne** CDataFrame, int valeur){
+    for (int i = 0; i < taille_logique_cdataframe(CDataFrame); ++i) {
+        for (int j = 0; j < CDataFrame[i]->taille_logique; ++j) {
+            if(CDataFrame[i]->donnees[j] == valeur)
+            return 1;
+        }
+    }
+    return 0;
+}
+void changement_valeur(Colonne** CDataFrame, int colonne, int ligne, int valeur){
+    CDataFrame[colonne]->donnees[ligne] = valeur;
+}
