@@ -58,3 +58,31 @@ int retourne_valeur_a_x(Colonne* colonne, int x){
     }
     return *(colonne->donnees + x); 
 }
+int nombre_occurence_superieur(Colonne* colonne, int valeur){
+    int cpt=0;
+    if(colonne == NULL || colonne->donnees == NULL){
+        return 0;
+    }
+    else{
+        for (int i = 0; i<colonne->taille_logique; i++){
+            if(colonne->donnees[i] > valeur){
+                cpt +=1;
+            }
+        }
+        return cpt;
+    }
+}
+int nombre_occurence_inferieur(Colonne* colonne, int valeur){
+    int cpt=0;
+    if(colonne == NULL || colonne->donnees == NULL){
+        return 0;
+    }
+    else{
+        for (int i = 0; i<colonne->taille_logique; i++){
+            if(colonne->donnees[i] < valeur){
+                cpt +=1;
+            }
+        }
+        return cpt;
+    }
+}
