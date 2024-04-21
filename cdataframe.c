@@ -153,3 +153,18 @@ void afficher_nom_colonne(Colonne** CDataFrame){
 void afficher_nombre_ligne(Colonne** CDataFrame){
     printf("%d", CDataFrame[0]->taille_logique);
 }
+void afficher_nombre_colonne(Colonne** CDataFrame){
+    printf("%d", taille_logique_cdataframe(CDataFrame));
+}
+int nombre_cellule_x(Colonne** CDataFrame, int x){
+    int cpt=0;
+    for (int i = 0; i < 100; ++i) {
+        if(CDataFrame[i] != NULL){
+            for (int j = 0; j < CDataFrame[i]->taille_logique; ++j) {
+                if(CDataFrame[i]->donnees[j] ==x)
+                    cpt+=1;
+            }
+        }
+    }
+    return cpt;
+}
