@@ -10,7 +10,7 @@ Colonne *creer_colonne(char* titre){
     return nouvelle_colonne;
 }
 int inserer_valeur(Colonne* colonne, int valeur){
-    if(colonne == NULL){
+    if(colonne->donnees == NULL){
         colonne->donnees = (int *) malloc(255 * sizeof(int));
         if (colonne->donnees == NULL) {
             return 0;
