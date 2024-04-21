@@ -144,3 +144,12 @@ int existence_valeur(Colonne** CDataFrame, int valeur){
 void changement_valeur(Colonne** CDataFrame, int colonne, int ligne, int valeur){
     CDataFrame[colonne]->donnees[ligne] = valeur;
 }
+
+void afficher_nom_colonne(Colonne** CDataFrame){
+    for (int i = 0; i < taille_logique_cdataframe(CDataFrame); ++i) {
+        printf("%s\n",CDataFrame[i]->titre);
+    }
+}
+void afficher_nombre_ligne(Colonne** CDataFrame){
+    printf("%d", CDataFrame[0]->taille_logique);
+}
