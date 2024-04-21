@@ -114,3 +114,11 @@ void ajouter_ligne_CDataframe(Colonne** CDataFrame, int valeur){
         inserer_valeur(CDataFrame[i], valeur);
     }
 }
+void supprimer_ligne_CDataframe(Colonne** CDataFrame){
+    for (int i = 0; i < 100; ++i) {
+        CDataFrame[i]->donnees[CDataFrame[i]->taille_logique] = 0;
+    }
+}
+void ajouter_colonne_CDataframe(Colonne** CDataFrame){
+    CDataFrame[taille_logique_cdataframe(CDataFrame)] = creer_colonne("Nouvelle colonne");
+}
