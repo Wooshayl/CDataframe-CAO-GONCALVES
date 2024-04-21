@@ -14,6 +14,9 @@ Colonne *creer_colonne(char* titre);
 void print_col(Colonne* colonne);
 int retourne_valeur_a_x(Colonne* colonne, int x);
 int inserer_valeur(Colonne* colonne, int valeur);
+int nombre_occurence_valeur(Colonne* colonne, int valeur);
+int nombre_occurence_superieur(Colonne* colonne, int valeur);
+int nombre_occurence_inferieur(Colonne* colonne, int valeur);
 
 
 #endif //CDDATAFRAME_COLUMN_H
