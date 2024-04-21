@@ -10,5 +10,7 @@ void affichage_cdatatframe_ligne_utilisateur(Colonne** CDataFrame);
 void affichage_cdatatframe_colonne_utilisateur(Colonne** CDataFrame);
 void ajouter_ligne_CDataframe(Colonne** CDataFrame, int valeur);
 void supprimer_ligne_CDataframe(Colonne** CDataFrame);
+void ajouter_colonne_CDataframe(Colonne** CDataFrame);
+void supprimer_colonne_CDataframe(Colonne** CDataFrame);
 
 #endif //CDDATAFRAME_CDATAFRAME_H
