@@ -1,14 +1,19 @@
 #include "column.h"
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 Colonne *creer_colonne(char* titre){
-    Colonne *nouvelle_colonne = (Colonne *)malloc(sizeof(Colonne));;
-    nouvelle_colonne->titre = titre;
+    Colonne *nouvelle_colonne = (Colonne *)malloc(sizeof(Colonne));
+    nouvelle_colonne->titre = (char*)malloc(strlen(titre)+1);
+    strcpy(nouvelle_colonne->titre, titre);
     nouvelle_colonne->donnees = NULL;
     nouvelle_colonne->taille_physique = 255;
     nouvelle_colonne->taille_logique = 0;
+    //printf("nouvelle colonne addr: %x\n",nouvelle_colonne);
     return nouvelle_colonne;
 }
+
 int inserer_valeur(Colonne* colonne, int valeur){
     if(colonne->donnees == NULL){
         colonne->donnees = (int *) malloc(255 * sizeof(int));
@@ -33,11 +38,17 @@ int inserer_valeur(Colonne* colonne, int valeur){
         return 1;
     }
 }
+
+void supprimer_colonne(Colonne **colonne) {
+    free((*colonne)->donnees);
+    free(*colonne);
+}
 void print_col(Colonne* colonne){
     for (int i = 0; i < colonne->taille_logique; i++){
-        printf("[%d] %d \n", i, *(colonne->donnees + i) 
+        printf("[%d] %d\n", i, *(colonne->donnees + i));
     }
 }
+
 int nombre_occurence_valeur(Colonne* colonne, int valeur){
     int cpt=0;
     if(colonne == NULL || colonne->donnees == NULL){
@@ -53,10 +64,10 @@ int nombre_occurence_valeur(Colonne* colonne, int valeur){
     }
 }
 int retourne_valeur_a_x(Colonne* colonne, int x){
-    if (x > taille_logique){
-        return NULL;
+    if (x > colonne->taille_logique || x<0){
+        return 0;
     }
-    return *(colonne->donnees + x); 
+    return (colonne->donnees[x]);
 }
 int nombre_occurence_superieur(Colonne* colonne, int valeur){
     int cpt=0;
