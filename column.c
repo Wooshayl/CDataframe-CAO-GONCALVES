@@ -25,7 +25,7 @@ int inserer_valeur(Colonne* colonne, void* valeur) {
     if (colonne->donnees == NULL){
         colonne->donnees = (COL_TYPE**) malloc(255*sizeof(COL_TYPE*));
     }
-    
+
     colonne->donnees[colonne->taille_logique] = (COL_TYPE*)malloc(sizeof(COL_TYPE));
 
     if (colonne->index == NULL){
@@ -36,47 +36,47 @@ int inserer_valeur(Colonne* colonne, void* valeur) {
     // Copy the value into the column based on the column type
     switch (colonne->type_colonne) {
         case UINT:
-            colonne->donnees[colonne->taille_logique]->uint_value = *(unsigned int*)value;
+            colonne->donnees[colonne->taille_logique]->uint_value = *(unsigned int*)valeur;
             break;
         case INT:
-            if (value == NULL){
+            if (valeur == NULL){
                 colonne->donnees[colonne->taille_logique]->int_value = 0;
                 break;
             }
-            colonne->donnees[colonne->taille_logique]->int_value = *(int*)value;
+            colonne->donnees[colonne->taille_logique]->int_value = *(int*)valeur;
             break;
         case CHAR:
-            if (value == NULL){
+            if (valeur == NULL){
                 colonne->donnees[colonne->taille_logique]->char_value = '\0';
                 break;
             }
-            colonne->donnees[colonne->taille_logique]->char_value = *(char*)value;
+            colonne->donnees[colonne->taille_logique]->char_value = *(char*)valeur;
             break;
         case FLOAT:
-            if (value == NULL){
+            if (valeur == NULL){
                 colonne->donnees[colonne->taille_logique]->float_value = 0;
                 break;
             }
-            colonne->donnees[colonne->taille_logique]->float_value = *(float*)value;
+            colonne->donnees[colonne->taille_logique]->float_value = *(float*)valeur;
             break;
         case DOUBLE:
-            if (value == NULL){
+            if (valeur == NULL){
                 colonne->donnees[colonne->taille_logique]->double_value = 0;
                 break;
             }
-            colonne->donnees[colonne->taille_logique]->double_value = *(double*)value;
+            colonne->donnees[colonne->taille_logique]->double_value = *(double*)valeur;
             break;
         case STRING:
-            if (value == NULL){
+            if (valeur == NULL){
                 colonne->donnees[colonne->taille_logique]->string_value = NULL;
                 break;
             }
-            colonne->donnees[colonne->taille_logique]->string_value = (char*)malloc(strlen((char*)value) + 1);
-            strcpy(colonne->donnees[colonne->taille_logique]->string_value, (char*)value);
+            colonne->donnees[colonne->taille_logique]->string_value = (char*)malloc(strlen((char*)valeur) + 1);
+            strcpy(colonne->donnees[colonne->taille_logique]->string_value, (char*)valeur);
 
             break;
         case STRUCTURE:
-            colonne->donnees[colonne->taille_logique]->struct_value = value;
+            colonne->donnees[colonne->taille_logique]->struct_value = valeur;
             break;
         default:
             // Invalid column type
