@@ -41,4 +41,10 @@ int nombre_occurence_valeur(Colonne* colonne, void* valeur);
 char* retourne_valeur_a_x(Colonne* colonne, int x);
 int nombre_occurence_superieur(Colonne* colonne, void* valeur);
 int nombre_occurence_inferieur(Colonne* colonne, void* valeur);
+void sort(Colonne* col, int sort_dir);
+void afficher_col_index(Colonne* colonne);
+void efface_index(Colonne* col);
+int check_index(Colonne* col);
+void update_index(Colonne *col);
+int recherche_valeur_dans_colonne(Colonne *col, void *val);
 #endif //CDDATAFRAME_COLUMN_H
