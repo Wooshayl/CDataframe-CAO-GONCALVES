@@ -401,10 +401,14 @@ void ajouter_colonne_CDataframe(Colonne*** CDataFrame, int * taille) {
         }
     }
 }
-void supprimer_colonne_CDataframe(Colonne** CDataFrame){
-    CDataFrame[taille_logique_cdataframe(CDataFrame)-1] = NULL;
 
+void supprimer_colonne_CDataframe(Colonne*** CDataFrame, int* taille){
+    *CDataFrame[*taille - 1] = NULL;
+    Colonne ** NouveauCDataFrame = (Colonne**) realloc(*CDataFrame, (*taille - 1)*sizeof(Colonne*))
+    *CDataFrame = NouveauCDataFrame
+    *taille = *taille - 1
 }
+
 void renommer_titre(Colonne** CDataFrame, int position){
     printf("Chosir un nouveau titre : ");
     char nouveau_titre[100];
