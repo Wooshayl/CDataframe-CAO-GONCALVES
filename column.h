@@ -3,6 +3,9 @@
 #define CDDATAFRAME_COLUMN_H
 #define REALOC_SIZE 256
 
+#define ASC 0
+#define DESC 1
+
 enum enum_type
 {
     NULLVAL = 1 , UINT, INT, CHAR, FLOAT, DOUBLE, STRING, STRUCTURE
