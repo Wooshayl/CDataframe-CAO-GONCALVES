@@ -268,37 +268,141 @@ void supprimer_ligne_CDataframe(Colonne** CDataFrame, int taille){
     }
 }
 
-void ajouter_colonne_CDataframe(Colonne** CDataFrame, int* taille){
+void ajouter_colonne_CDataframe(Colonne*** CDataFrame, int * taille) {
+    Colonne ** NouveauCDataFrame = (Colonne**) realloc(*CDataFrame, (*taille + 1)*sizeof(Colonne*))
+    if (NouveauCDataFrame == NULL) {
+        printf("Allocation échoué\n");
+        free(*CDataFrame);  // Free the original block if realloc fails
+        return 1;
+    }
     printf("Quel titre voulez-vous pour la nouvelle colonne : ");
     char titre[100];
     gets(titre);
     printf("Choisissez le type de votre colonne :\n[1]Entier Naturel [2]Entier Relatif [3]Charactère [4]Floatant [5]Double [6]Chaine de caractère : ");
     int choix_type;
+    scanf("%d", & choix_type);
+    getchar();
+
     switch (choix_type) {
-        case 1:
-        {CDataFrame[*taille] = creer_colonne(UINT, titre);
-            break;}
-        case 2:
-        {CDataFrame[*taille] = creer_colonne(INT, titre);
-            break;}
-        case 3:
-        {CDataFrame[*taille] = creer_colonne(CHAR, titre);
-            break;}
-        case 4:
-        {CDataFrame[*taille] = creer_colonne(FLOAT, titre);
-            break;}
-        case 5:
-        {CDataFrame[*taille] = creer_colonne(DOUBLE, titre);
-            break;}
-        case 6:
-        {CDataFrame[*taille] = creer_colonne(STRING, titre);
-            break;}
+        case 1: {
+            *CDataFrame = NouveauCDataFrame;
+            *CDataFrame[ * taille] = creer_colonne(UINT, titre);
+            * taille = * taille + 1;
+            break;
+        }
+        case 2: {
+            *CDataFrame = NouveauCDataFrame;
+            *CDataFrame[ * taille] = creer_colonne(INT, titre);
+            * taille = * taille + 1;
+            break;
+        }
+        case 3: {
+            *CDataFrame = NouveauCDataFrame;
+            *CDataFrame[ * taille] = creer_colonne(CHAR, titre);
+            * taille = * taille + 1;
+            break;
+        }
+        case 4: {
+            *CDataFrame = NouveauCDataFrame;
+            *CDataFrame[ * taille] = creer_colonne(FLOAT, titre);
+            * taille = * taille + 1;
+            break;
+        }
+        case 5: {
+            *CDataFrame = NouveauCDataFrame;
+            *CDataFrame[ * taille] = creer_colonne(DOUBLE, titre);
+            * taille = * taille + 1;
+            break;
+        }
+        case 6: {
+            *CDataFrame = NouveauCDataFrame;
+            *CDataFrame[ * taille] = creer_colonne(STRING, titre);
+            * taille = * taille + 1;
+            break;
+        }
         default:
             printf("Ce type n'existe pas.\n");
-
     }
-    *taille = *taille + 1;
+
+    nbr_lig_max = *CDataFrame[0]->taille_logique;
+    printf("Combien de données voulez-vous dans nouvelle colonne ? ");
+    int nbr_lig;
+    scanf("%d", & nbr_lig);
+    getchar();
+
+    if (nbr_lig > nbr_lig_max) {
+        for (int i = 0; i < nbr_lig - nbr_lig_max; ++i) {
+            ajouter_ligne_CDataframe(*CDataFrame, *taille);
+        }
+    }
+
+    switch (choix_type) {
+        case 1: {
+            for (int j = 0; j < nbr_lig; ++j) {
+                printf("Entrez une valeur : ");
+                unsigned int valeur_ligne;
+                scanf("%ud", & valeur_ligne);
+                getchar();
+                inserer_valeur(*CDataFrame[ * taille], & valeur_ligne);
+            }
+            break;
+        }
+        case 2: {
+            for (int j = 0; j < nbr_lig; ++j) {
+                printf("Entrez une valeur : ");
+                int valeur_ligne;
+                scanf("%d", & valeur_ligne);
+                getchar();
+                inserer_valeur(*CDataFrame[ * taille], & valeur_ligne);
+            }
+            break;
+        }
+        case 3: {
+            for (int j = 0; j < nbr_lig; ++j) {
+                printf("Entrez une valeur : ");
+                char valeur_ligne;
+                scanf("%c", & valeur_ligne);
+                getchar();
+                inserer_valeur(*CDataFrame[ * taille], & valeur_ligne);
+            }
+            break;
+        }
+        case 4: {
+            for (int j = 0; j < nbr_lig; ++j) {
+                printf("Entrez une valeur : ");
+                float valeur_ligne;
+                scanf("%f", & valeur_ligne);
+                getchar();
+                inserer_valeur(*CDataFrame[ * taille], & valeur_ligne);
+            }
+            break;
+        }
+        case 5: {
+            for (int j = 0; j < nbr_lig; ++j) {
+                printf("Entrez une valeur : ");
+                double valeur_ligne;
+                scanf("%lf", & valeur_ligne);
+                getchar();
+                inserer_valeur(*CDataFrame[ * taille], & valeur_ligne);
+            }
+            break;
+        }
+        case 6: {
+            for (int j = 0; j < nbr_lig; ++j) {
+                printf("Entrez une valeur : ");
+                char buff[256];
+                gets(buff);
+                char * valeur_ligne = (char * ) malloc(strlen(buff) + 1);
+                strcpy(valeur_ligne, buff);
+                inserer_valeur(*CDataFrame[ * taille], valeur_ligne);
+            }
+            break;
+        }
+        default:
+            return 0;
+    }
 }
+
 void supprimer_colonne_CDataframe(Colonne** CDataFrame){
     CDataFrame[taille_logique_cdataframe(CDataFrame)-1] = NULL;
 
