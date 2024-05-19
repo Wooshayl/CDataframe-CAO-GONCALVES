@@ -21,6 +21,7 @@ union column_type{
 typedef union column_type COL_TYPE ;
 
 
+
 typedef struct {
     char *titre;
     ENUM_TYPE type_colonne;
@@ -28,6 +29,17 @@ typedef struct {
     unsigned int taille_physique;
     unsigned int taille_logique;
     unsigned long long int* index;
+
+
+    // index valid
+    // 0 : no index
+    // -1 : invalid index
+    // 1 : valid index
+    int valid_index;
+    // direction de tri Ascendant ou Déscendant
+    // 0 : ASC
+    // 1 : DESC
+    int sort_dir;
 }Colonne;
 
 /*
