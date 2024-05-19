@@ -3,36 +3,7 @@
 #include <stdlib.h>
 
 
-enum enum_type
-{
-    NULLVAL = 1 , UINT, INT, CHAR, FLOAT, DOUBLE, STRING, STRUCTURE
-};
-typedef enum enum_type ENUM_TYPE;
 
-union column_type{
-    unsigned int uint_value;
-    signed int int_value;
-    char char_value;
-    float float_value;
-    double double_value;
-    char* string_value;
-    void* struct_value;
-};
-typedef union column_type COL_TYPE ;
-
-
-typedef struct {
-    char *titre;
-    ENUM_TYPE type_colonne;
-    COL_TYPE **donnees;
-    unsigned int taille_physique;
-    unsigned int taille_logique;
-    unsigned long long int* index;
-}Colonne;
-
-typedef struct {
-    int x,y;
-} point;
 
 Colonne *creer_colonne(ENUM_TYPE type, char* titre){
     Colonne *nouvelle_colonne = (Colonne *)malloc(sizeof(Colonne));
@@ -42,7 +13,9 @@ Colonne *creer_colonne(ENUM_TYPE type, char* titre){
     nouvelle_colonne->donnees = NULL;
     nouvelle_colonne->taille_physique = 256;
     nouvelle_colonne->taille_logique = 0;
-    nouvelle_colonne->index = NULL;
+    nouvelle_colonne->index = 0;
+    nouvelle_colonne->valid_index = 0;
+    nouvelle_colonne->sort_dir = 0;
     printf("nouvelle colonne addr: %x\n",nouvelle_colonne);
     return nouvelle_colonne;
 }
