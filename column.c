@@ -53,12 +53,24 @@ int inserer_valeur(Colonne* colonne, void* valeur) {
             colonne->donnees[colonne->taille_logique]->char_value = *(char*)value;
             break;
         case FLOAT:
+            if (value == NULL){
+                colonne->donnees[colonne->taille_logique]->float_value = 0;
+                break;
+            }
             colonne->donnees[colonne->taille_logique]->float_value = *(float*)value;
             break;
         case DOUBLE:
+            if (value == NULL){
+                colonne->donnees[colonne->taille_logique]->double_value = 0;
+                break;
+            }
             colonne->donnees[colonne->taille_logique]->double_value = *(double*)value;
             break;
         case STRING:
+            if (value == NULL){
+                colonne->donnees[colonne->taille_logique]->string_value = NULL;
+                break;
+            }
             colonne->donnees[colonne->taille_logique]->string_value = (char*)malloc(strlen((char*)value) + 1);
             strcpy(colonne->donnees[colonne->taille_logique]->string_value, (char*)value);
 
