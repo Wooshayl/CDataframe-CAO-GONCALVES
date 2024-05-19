@@ -269,11 +269,11 @@ void supprimer_ligne_CDataframe(Colonne** CDataFrame, int taille){
 }
 
 void ajouter_colonne_CDataframe(Colonne*** CDataFrame, int * taille) {
-    Colonne ** NouveauCDataFrame = (Colonne**) realloc(*CDataFrame, (*taille + 1)*sizeof(Colonne*))
+    Colonne ** NouveauCDataFrame = (Colonne**) realloc(*CDataFrame, (*taille + 1)*sizeof(Colonne*));
     if (NouveauCDataFrame == NULL) {
         printf("Allocation échoué\n");
-        free(*CDataFrame);  // Free the original block if realloc fails
-        return 1;
+        free(*CDataFrame);
+        return;
     }
     printf("Quel titre voulez-vous pour la nouvelle colonne : ");
     char titre[100];
@@ -286,37 +286,37 @@ void ajouter_colonne_CDataframe(Colonne*** CDataFrame, int * taille) {
     switch (choix_type) {
         case 1: {
             *CDataFrame = NouveauCDataFrame;
-            *CDataFrame[ * taille] = creer_colonne(UINT, titre);
+            (*CDataFrame)[ * taille] = creer_colonne(UINT, titre);
             * taille = * taille + 1;
             break;
         }
         case 2: {
             *CDataFrame = NouveauCDataFrame;
-            *CDataFrame[ * taille] = creer_colonne(INT, titre);
+            (*CDataFrame)[ * taille] = creer_colonne(INT, titre);
             * taille = * taille + 1;
             break;
         }
         case 3: {
             *CDataFrame = NouveauCDataFrame;
-            *CDataFrame[ * taille] = creer_colonne(CHAR, titre);
+            (*CDataFrame)[ * taille] = creer_colonne(CHAR, titre);
             * taille = * taille + 1;
             break;
         }
         case 4: {
             *CDataFrame = NouveauCDataFrame;
-            *CDataFrame[ * taille] = creer_colonne(FLOAT, titre);
+            (*CDataFrame)[ * taille] = creer_colonne(FLOAT, titre);
             * taille = * taille + 1;
             break;
         }
         case 5: {
             *CDataFrame = NouveauCDataFrame;
-            *CDataFrame[ * taille] = creer_colonne(DOUBLE, titre);
+            (*CDataFrame)[ * taille] = creer_colonne(DOUBLE, titre);
             * taille = * taille + 1;
             break;
         }
         case 6: {
             *CDataFrame = NouveauCDataFrame;
-            *CDataFrame[ * taille] = creer_colonne(STRING, titre);
+            (*CDataFrame)[ * taille] = creer_colonne(STRING, titre);
             * taille = * taille + 1;
             break;
         }
@@ -324,17 +324,11 @@ void ajouter_colonne_CDataframe(Colonne*** CDataFrame, int * taille) {
             printf("Ce type n'existe pas.\n");
     }
 
-    nbr_lig_max = *CDataFrame[0]->taille_logique;
+    int nbr_lig_max =(*CDataFrame)[0]->taille_logique;
     printf("Combien de données voulez-vous dans nouvelle colonne ? ");
     int nbr_lig;
     scanf("%d", & nbr_lig);
     getchar();
-
-    if (nbr_lig > nbr_lig_max) {
-        for (int i = 0; i < nbr_lig - nbr_lig_max; ++i) {
-            ajouter_ligne_CDataframe(*CDataFrame, *taille);
-        }
-    }
 
     switch (choix_type) {
         case 1: {
@@ -343,7 +337,7 @@ void ajouter_colonne_CDataframe(Colonne*** CDataFrame, int * taille) {
                 unsigned int valeur_ligne;
                 scanf("%ud", & valeur_ligne);
                 getchar();
-                inserer_valeur(*CDataFrame[ * taille], & valeur_ligne);
+                inserer_valeur((*CDataFrame)[ * taille-1], & valeur_ligne);
             }
             break;
         }
@@ -353,7 +347,7 @@ void ajouter_colonne_CDataframe(Colonne*** CDataFrame, int * taille) {
                 int valeur_ligne;
                 scanf("%d", & valeur_ligne);
                 getchar();
-                inserer_valeur(*CDataFrame[ * taille], & valeur_ligne);
+                inserer_valeur((*CDataFrame)[ *taille-1], & valeur_ligne);
             }
             break;
         }
@@ -363,7 +357,7 @@ void ajouter_colonne_CDataframe(Colonne*** CDataFrame, int * taille) {
                 char valeur_ligne;
                 scanf("%c", & valeur_ligne);
                 getchar();
-                inserer_valeur(*CDataFrame[ * taille], & valeur_ligne);
+                inserer_valeur((*CDataFrame)[ *taille-1], & valeur_ligne);
             }
             break;
         }
@@ -373,7 +367,7 @@ void ajouter_colonne_CDataframe(Colonne*** CDataFrame, int * taille) {
                 float valeur_ligne;
                 scanf("%f", & valeur_ligne);
                 getchar();
-                inserer_valeur(*CDataFrame[ * taille], & valeur_ligne);
+                inserer_valeur((*CDataFrame)[  *taille-1], & valeur_ligne);
             }
             break;
         }
@@ -383,7 +377,7 @@ void ajouter_colonne_CDataframe(Colonne*** CDataFrame, int * taille) {
                 double valeur_ligne;
                 scanf("%lf", & valeur_ligne);
                 getchar();
-                inserer_valeur(*CDataFrame[ * taille], & valeur_ligne);
+                inserer_valeur((*CDataFrame)[ *taille-1], & valeur_ligne);
             }
             break;
         }
@@ -394,15 +388,19 @@ void ajouter_colonne_CDataframe(Colonne*** CDataFrame, int * taille) {
                 gets(buff);
                 char * valeur_ligne = (char * ) malloc(strlen(buff) + 1);
                 strcpy(valeur_ligne, buff);
-                inserer_valeur(*CDataFrame[ * taille], valeur_ligne);
+                inserer_valeur((*CDataFrame)[ *taille-1], valeur_ligne);
             }
             break;
         }
         default:
-            return 0;
+            return;
+    }
+    if (nbr_lig > nbr_lig_max) {
+        for (int i = 0; i < nbr_lig - nbr_lig_max; ++i) {
+            ajouter_ligne_CDataframe(*CDataFrame, (*taille)-1);
+        }
     }
 }
-
 void supprimer_colonne_CDataframe(Colonne** CDataFrame){
     CDataFrame[taille_logique_cdataframe(CDataFrame)-1] = NULL;
 
@@ -416,8 +414,9 @@ void renommer_titre(Colonne** CDataFrame, int position){
     CDataFrame[position]->titre = (char*)realloc(CDataFrame[position]->titre, strlen(nouveau_titre)+1);
     strcpy(CDataFrame[position]->titre, nouveau_titre);
 }
-int existence_valeur(Colonne** CDataFrame, int valeur){
-    for (int i = 0; i < taille_logique_cdataframe(CDataFrame); ++i) {
+
+int existence_valeur(Colonne** CDataFrame,  void* valeur, int taille){
+    for (int i = 0; i < taille; ++i) {
         for (int j = 0; j < CDataFrame[i]->taille_logique; ++j) {
             if(CDataFrame[i]->donnees[j] == valeur)
             return 1;
@@ -425,52 +424,47 @@ int existence_valeur(Colonne** CDataFrame, int valeur){
     }
     return 0;
 }
+
 void changement_valeur(Colonne** CDataFrame, int colonne, int ligne, int valeur){
     CDataFrame[colonne]->donnees[ligne] = &valeur;//je sais pas
 }
+
 void afficher_nom_colonne(Colonne** CDataFrame, int taille){
     for (int i = 0; i < taille; ++i) {
         printf("%s\n",CDataFrame[i]->titre);
     }
 }
+
 void afficher_nombre_ligne(Colonne** CDataFrame){
-    printf("%d", CDataFrame[0]->taille_logique);
+    printf("%d\n", CDataFrame[0]->taille_logique);
 }
-void afficher_nombre_colonne(Colonne** CDataFrame){
-    printf("%d", taille_logique_cdataframe(CDataFrame));
+
+void afficher_nombre_colonne(Colonne** CDataFrame,int taille){
+    printf("%d\n", taille);
 }
-int nombre_cellule_x(Colonne** CDataFrame, int x){
+int nombre_cellule_x(Colonne** CDataFrame, void* x, int taille){
     int cpt=0;
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < taille; ++i) {
         if(CDataFrame[i] != NULL){
-            for (int j = 0; j < CDataFrame[i]->taille_logique; ++j) {
-                if(CDataFrame[i]->donnees[j] ==x)
-                    cpt+=1;
-            }
+            cpt += nombre_occurence_valeur(CDataFrame[i], x);
         }
     }
     return cpt;
 }
-int nombre_cellule_superieur_x(Colonne** CDataFrame, int x){
+int nombre_cellule_superieur_x(Colonne** CDataFrame, void* x, int taille){
     int cpt=0;
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < taille; ++i) {
         if(CDataFrame[i] != NULL){
-            for (int j = 0; j < CDataFrame[i]->taille_logique; ++j) {
-                if(CDataFrame[i]->donnees[j] > x)
-                    cpt+=1;
-            }
+            cpt += nombre_occurence_superieur(CDataFrame[i], x);
         }
     }
     return cpt;
 }
-int nombre_cellule_inferieur_x(Colonne** CDataFrame, int x) {
-    int cpt = 0;
-    for (int i = 0; i < 100; ++i) {
-        if (CDataFrame[i] != NULL) {
-            for (int j = 0; j < CDataFrame[i]->taille_logique; ++j) {
-                if (CDataFrame[i]->donnees[j] < x)
-                    cpt += 1;
-            }
+int nombre_cellule_inferieur_x(Colonne** CDataFrame, void* x,int taille){
+    int cpt=0;
+    for (int i = 0; i < taille; ++i) {
+        if(CDataFrame[i] != NULL){
+            cpt += nombre_occurence_inferieur(CDataFrame[i], x);
         }
     }
     return cpt;
