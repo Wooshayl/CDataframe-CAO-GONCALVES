@@ -707,7 +707,7 @@ void sort(Colonne* col, int sort_dir){
         col->valid_index = 1;
         return;
     } else if (col->valid_index == 1){
-        printf("Déjà trié");
+        printf("Déjà trié\n");
         return;
     } else {
         printf("Valeur invalide");
@@ -756,10 +756,13 @@ Elle renvoit un entier représentant l'état de l'index (0 : pas d'index, -1 : i
 ----------------------------------------------------------------------------------------------------------------------*/
 int check_index(Colonne* col){
     if (col->index == NULL){
+        printf("Pas d'index!");
         return 0;
     }else if (col->valid_index == 0 || col->valid_index == -1){
+        printf("Index non trié!");
         return -1;
     }else if (col->valid_index == 1){
+        printf("Index trié");
         return 1;
     }
     printf("Erreur check_index");
