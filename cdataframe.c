@@ -1,26 +1,32 @@
+/*======================================================================================================================
+                                CDataframe par Lilian CAO et Valentin GONCALVES
+Ce fichier s'occupe de la gestion du CDataframe, il fait appel aux fonctions présentes dans colonne.c et les utilise
+ àbon escient afin d'avoir un Dataframe fonctionnel pouvant stocker et traiter tout type de donnée.
+======================================================================================================================*/
+
 
 #include "cdataframe.h"
-#include "column.h"
+#include "colonne.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+/*----------------------------------------------------------------------------------------------------------------------
+                            FONCTION : remplissage_utilisateur_CDataframe
+Cette fonction permet à l'utilisateur de remplir le dataframe et donc de pouvoir par la suite utiliser toutes ses
+ fonctionnalitées.
+ Il prend en paramètre la taille voulut par l'utilisateur.
+ Il renvoit le Dataframe si l'exécution est bonne et un entier si ce n'est pas le cas.
+----------------------------------------------------------------------------------------------------------------------*/
 
-
-
-int taille_logique_cdataframe(Colonne** CDataFrame){
-    for (int i = 0; i < 100; ++i) {
-        if(CDataFrame[i] = NULL){
-            return i;
-        }
-    }
-}
 
 Colonne** remplissage_utilisateur_CDataframe(int taille){
     Colonne** CDataFrame = (Colonne**)malloc(taille*sizeof(Colonne*));
     int nbr_col, nbr_lig_max=0;
     getchar();
+    //Créé une liste pour contenir le type de chaque colonne
     int* liste_choix_types = (int*) malloc(sizeof(int)*taille);
+    //On fait une boucle pour crée autant de colonne que l'utilisateur a demandé
     for(int i =0; i < taille; i++) {
         printf("Quel titre voulez-vous pour la colonne %d : ", i);
         char titre[100];
@@ -30,6 +36,7 @@ Colonne** remplissage_utilisateur_CDataframe(int taille){
         scanf("%d", &choix_type);
         getchar();
         liste_choix_types[i] = choix_type;
+        //On fait un switch qui permet de créer une colonne celon le type choisit par l'utilisateur
         switch (choix_type) {
             case 1:
             {Colonne *colonne = creer_colonne(UINT, titre);
@@ -61,10 +68,8 @@ Colonne** remplissage_utilisateur_CDataframe(int taille){
 
         }
 
-       // printf("i: %d et titre : %s\n",i,CDataFrame[0]->titre);
+
     }
-    //printf("%s\n",CDataFrame[0]->titre);
-    //printf("%s\n",CDataFrame[1]->titre);
     for (int i = 0; i < taille; ++i) {
         printf("Combien de données voulez-vous dans la colonne %d ? ", i);
         int nbr_lig;
@@ -74,6 +79,7 @@ Colonne** remplissage_utilisateur_CDataframe(int taille){
             nbr_lig_max = nbr_lig;
         }
         switch (liste_choix_types[i]) {
+            //On fait un deuxième switch pour que l'utilisateur remplisse le Cdataframe avec les valeurs de son choix
             case 1:
             {for (int j = 0; j < nbr_lig; ++j) {
                     printf("Entrez une valeur : ");
@@ -134,6 +140,7 @@ Colonne** remplissage_utilisateur_CDataframe(int taille){
 
         }
     }
+    //On fait une dernière boucle pour que chaque colonne est le même nombre de lignes en remplissant avec des NULL
     for (int i = 0; i < taille; ++i) {
         if(CDataFrame[i]->taille_logique < nbr_lig_max){
             for (int j = CDataFrame[i]->taille_logique; j < nbr_lig_max; ++j) {
@@ -145,6 +152,16 @@ Colonne** remplissage_utilisateur_CDataframe(int taille){
     }
     return CDataFrame;
 }
+
+
+
+/*----------------------------------------------------------------------------------------------------------------------
+                                          FONCTION : remplissage_dure
+Cette fonction remplit simplement un Cdataframe en dure.
+ Elle prend en paramètre le Dataframe qu'il faut remplir.
+ ELle ne renvoit rien pusiqu'elle le remplit dynamiquement
+----------------------------------------------------------------------------------------------------------------------*/
+
 
 void remplissage_dure(Colonne** CDataFrame){
     Colonne *ma_colonne = creer_colonne(INT,"Ma colonne");
@@ -162,27 +179,44 @@ void remplissage_dure(Colonne** CDataFrame){
     CDataFrame[0] = ma_colonne;
     CDataFrame[1] = ma_colonne2;
 }
+
+
+
+/*----------------------------------------------------------------------------------------------------------------------
+                                          FONCTION : affichage_cdatatframe
+Cette fonction a simplement pour but d'afficher un Cdataframe.
+ Elle prend en paramètre le Cdataframe à afficher et la taille de ce Dataframe.
+ Elle ne renvoit rien puisque son but est d'afficher.
+----------------------------------------------------------------------------------------------------------------------*/
 void affichage_cdatatframe(Colonne** CDataFrame, int taille){
     for (int i = 0; i < taille; ++i) {
+        //Vérifie s'il n'est pas nul
         if(CDataFrame[i] != NULL){
-            //printf("%s", CDataFrame[i]->titre);
             afficher_colonne(CDataFrame[i]);
             printf("\n");
         }
     }
 }
 
+
+/*----------------------------------------------------------------------------------------------------------------------
+                                FONCTION : affichage_cdatatframe_ligne_utilisateur
+Cette fonction a pour but d'afficher les n premières lignes du dataframe avec n choisit par l'utilisateur.
+Elle prend en paramètre le Dataframe à afficher et sa taille.
+Elle ne renvoit rien puisque c'est une fonction d'affichage.
+----------------------------------------------------------------------------------------------------------------------*/
 void affichage_cdatatframe_ligne_utilisateur(Colonne** CDataFrame, int taille){
     int valeur_ligne_utilisateur;
-    char str[100];
+    char str[256];
     printf("Jusqu'à quelles lignes voulez-vous ?");
     scanf("%d", &valeur_ligne_utilisateur);
     for (int i = 0; i < taille; ++i) {
+        //Vérifie qu'il n'y ai pas d'erreurs de taille.
         if(valeur_ligne_utilisateur > CDataFrame[i]->taille_logique)return;
         if(CDataFrame[i] != NULL){
             printf("%s", CDataFrame[i]->titre);
             for (int j = 0; j < valeur_ligne_utilisateur; ++j) {
-                convertir_valeur(CDataFrame[i],j,str, 100);//Checker ligne utilisateur > taille logique de la colonne
+                convertir_valeur(CDataFrame[i],j,str, 256);
                 printf("[%d]\t%s\t\t", j, str);
             }
             printf("\n");
@@ -191,6 +225,12 @@ void affichage_cdatatframe_ligne_utilisateur(Colonne** CDataFrame, int taille){
 }
 
 
+/*----------------------------------------------------------------------------------------------------------------------
+                                FONCTION : affichage_cdatatframe_colonne_utilisateur
+Cette fonction a pour but d'afficher les n premières colonnes du dataframe avec n choisit par l'utilisateur.
+Elle prend en paramètre le Dataframe à afficher.
+Elle ne renvoit rien puisque c'est une fonction d'affichage.
+----------------------------------------------------------------------------------------------------------------------*/
 void affichage_cdatatframe_colonne_utilisateur(Colonne** CDataFrame){
     int valeur_colonne_utilisateur;
     printf("Jusqu'à quelles colonnes voulez-vous ?");
@@ -204,9 +244,18 @@ void affichage_cdatatframe_colonne_utilisateur(Colonne** CDataFrame){
 
 }
 
+
+/*----------------------------------------------------------------------------------------------------------------------
+                                FONCTION : ajouter_ligne_CDataframe
+Cette fonction permet à l'utilisateur d'ajouter une ligne dans le Cdataframe et de remplir chaque colonnes avec les
+ valeurs de son choix.
+ Elle prend en paramètre le Dataframe et sa taille.
+ Elle ne renvoit rien pusiqu'elle modifie dynamiquement.
+----------------------------------------------------------------------------------------------------------------------*/
 void ajouter_ligne_CDataframe(Colonne** CDataFrame, int taille){
     for (int i = 0; i < taille; ++i) {
         switch (CDataFrame[i]->type_colonne) {
+            //Switch pour remplir chaque colonne avec le bon type
             case UINT:{
                 unsigned int valeur_temporaire;
                 printf("||Colonne de type ENTIER NATUREL||\tInsérez une valeur : ");
@@ -261,20 +310,39 @@ void ajouter_ligne_CDataframe(Colonne** CDataFrame, int taille){
     }
 }
 
+
+/*----------------------------------------------------------------------------------------------------------------------
+                                    FONCTION : supprimer_ligne_CDataframe
+Cette fonction supprime une ligne du CDataframe.
+ Elle prend en paramètre le Cdataframe et sa taille.
+ Elle ne renvoit rien puisqu'elle modifie dynamiquement.
+----------------------------------------------------------------------------------------------------------------------*/
 void supprimer_ligne_CDataframe(Colonne** CDataFrame, int taille){
     for (int i = 0; i < taille; ++i) {
+        //libère la mémoire de la ligne et décrémente la taille logique
         free(CDataFrame[i]->donnees[CDataFrame[i]->taille_logique] );
         CDataFrame[i]->taille_logique--;
     }
 }
 
+
+
+/*----------------------------------------------------------------------------------------------------------------------
+                                    FONCTION : ajouter_colonne_CDataframe
+Cette fonction permet à l'utilisateur d'ajouter une colonne dans le Cdataframe et de remplir chaque colonnes avec les
+ valeurs de son choix.
+ Elle prend en paramètre le Dataframe et sa taille.
+ Elle ne renvoit rien pusiqu'elle modifie dynamiquement.
+----------------------------------------------------------------------------------------------------------------------*/
 void ajouter_colonne_CDataframe(Colonne*** CDataFrame, int * taille) {
+    //On réallout la taille du Dataframe avec les vérifications nécessaires
     Colonne ** NouveauCDataFrame = (Colonne**) realloc(*CDataFrame, (*taille + 1)*sizeof(Colonne*));
     if (NouveauCDataFrame == NULL) {
         printf("Allocation échoué\n");
         free(*CDataFrame);
         return;
     }
+    //On remplit cette nouvelle colonne avec le titre demandé
     printf("Quel titre voulez-vous pour la nouvelle colonne : ");
     char titre[100];
     gets(titre);
@@ -284,6 +352,7 @@ void ajouter_colonne_CDataframe(Colonne*** CDataFrame, int * taille) {
     getchar();
 
     switch (choix_type) {
+        //switch celon le type demandé
         case 1: {
             *CDataFrame = NouveauCDataFrame;
             (*CDataFrame)[ * taille] = creer_colonne(UINT, titre);
@@ -323,7 +392,7 @@ void ajouter_colonne_CDataframe(Colonne*** CDataFrame, int * taille) {
         default:
             printf("Ce type n'existe pas.\n");
     }
-
+    //On demande maintenant à l'utilisateur de remplir avec les valeurs de son choix
     int nbr_lig_max =(*CDataFrame)[0]->taille_logique;
     printf("Combien de données voulez-vous dans nouvelle colonne ? ");
     int nbr_lig;
@@ -395,6 +464,8 @@ void ajouter_colonne_CDataframe(Colonne*** CDataFrame, int * taille) {
         default:
             return;
     }
+    //On fait une dernière vérification pour que chaque colonne est le même nombre de ligne en utilisant la fonction
+    //ajouter_ligne_CDataframe si nécessaire
     if (nbr_lig > nbr_lig_max) {
         for (int i = 0; i < nbr_lig - nbr_lig_max; ++i) {
             ajouter_ligne_CDataframe(*CDataFrame, (*taille)-1);
@@ -402,13 +473,25 @@ void ajouter_colonne_CDataframe(Colonne*** CDataFrame, int * taille) {
     }
 }
 
-void supprimer_colonne_CDataframe(Colonne*** CDataFrame, int* taille){
-    *CDataFrame[*taille - 1] = NULL;
-    Colonne ** NouveauCDataFrame = (Colonne**) realloc(*CDataFrame, (*taille - 1)*sizeof(Colonne*))
-    *CDataFrame = NouveauCDataFrame
-    *taille = *taille - 1
+
+/*----------------------------------------------------------------------------------------------------------------------
+                                    FONCTION : supprimer_colonne_CDataframe
+Cette fonction supprime une colonne du CDataframe.
+ Elle prend en paramètre le Cdataframe et sa taille.
+ Elle ne renvoit rien puisqu'elle modifie dynamiquement.
+----------------------------------------------------------------------------------------------------------------------*/
+void supprimer_colonne_CDataframe(Colonne** CDataFrame){
+    CDataFrame[taille_logique_cdataframe(CDataFrame)-1] = NULL;
+
 }
 
+
+/*----------------------------------------------------------------------------------------------------------------------
+                                    FONCTION : renommer_titre
+Cette fonction renomme une colonne du CDataframe.
+ Elle prend en paramètre le Cdataframe et la position de la colonne qu'il faut renommer.
+ Elle ne renvoit rien puisqu'elle modifie dynamiquement.
+----------------------------------------------------------------------------------------------------------------------*/
 void renommer_titre(Colonne** CDataFrame, int position){
     printf("Chosir un nouveau titre : ");
     char nouveau_titre[100];
@@ -419,6 +502,14 @@ void renommer_titre(Colonne** CDataFrame, int position){
     strcpy(CDataFrame[position]->titre, nouveau_titre);
 }
 
+
+
+
+/*----------------------------------------------------------------------------------------------------------------------
+                                    FONCTION : existence_valeur
+Cette fonction vérifie l'existence d'une valeur dans le Dataframe
+ Elle prend
+----------------------------------------------------------------------------------------------------------------------*/
 int existence_valeur(Colonne** CDataFrame,  void* valeur, int taille){
     for (int i = 0; i < taille; ++i) {
         for (int j = 0; j < CDataFrame[i]->taille_logique; ++j) {
@@ -429,23 +520,61 @@ int existence_valeur(Colonne** CDataFrame,  void* valeur, int taille){
     return 0;
 }
 
+
+/*----------------------------------------------------------------------------------------------------------------------
+                                    FONCTION : changement_valeur
+Cette fonction à pour role de changer une valeur à une position précise dans le Dataframe.
+----------------------------------------------------------------------------------------------------------------------*/
 void changement_valeur(Colonne** CDataFrame, int colonne, int ligne, int valeur){
     CDataFrame[colonne]->donnees[ligne] = &valeur;//je sais pas
 }
 
+
+
+
+/*----------------------------------------------------------------------------------------------------------------------
+                                    FONCTION : afficher_nom_colonne
+La fonction a pour but d'afficher le nom de toutes les colonnes.
+ Elle prend en paramètre le Cdataframe et sa taille.
+ Elle ne renvoit rien puisque c'est une fonction d'affichage.
+----------------------------------------------------------------------------------------------------------------------*/
 void afficher_nom_colonne(Colonne** CDataFrame, int taille){
     for (int i = 0; i < taille; ++i) {
         printf("%s\n",CDataFrame[i]->titre);
     }
 }
 
+/*----------------------------------------------------------------------------------------------------------------------
+                                    FONCTION : afficher_nombre_ligne
+Cette fonction a pour but d'afficher le nombre de lignes du Dataframe
+ Elle prend en paramètre le Cdataframe.
+ Elle ne renvoit rien puisque c'est une fonction d'affichage.
+----------------------------------------------------------------------------------------------------------------------*/
+
+
 void afficher_nombre_ligne(Colonne** CDataFrame){
     printf("%d\n", CDataFrame[0]->taille_logique);
 }
 
+
+
+/*----------------------------------------------------------------------------------------------------------------------
+                                    FONCTION : afficher_nombre_colonne
+Cette fonction a pour but d'afficher le nombre de colonnes du Dataframe
+ Elle prend en paramètre le Cdataframe et sa taille.
+ Elle ne renvoit rien puisque c'est une fonction d'affichage.
+----------------------------------------------------------------------------------------------------------------------*/
 void afficher_nombre_colonne(Colonne** CDataFrame,int taille){
     printf("%d\n", taille);
 }
+
+
+/*----------------------------------------------------------------------------------------------------------------------
+                                    FONCTION : nombre_cellule_x
+Cette fonction a pour but de donner le nombre de cellule du Cdataframe qui ont une valeur égal à x, avec x qui est une
+ valeur d'un type quelconque donné par l'utilisateur.
+  Elle prend en paramètre le Cdataframe, sa taille et une valeur chosit par l'utilisateur.
+----------------------------------------------------------------------------------------------------------------------*/
 int nombre_cellule_x(Colonne** CDataFrame, void* x, int taille){
     int cpt=0;
     for (int i = 0; i < taille; ++i) {
@@ -455,6 +584,15 @@ int nombre_cellule_x(Colonne** CDataFrame, void* x, int taille){
     }
     return cpt;
 }
+
+
+
+/*----------------------------------------------------------------------------------------------------------------------
+                                    FONCTION : nombre_cellule_superieur_x
+Cette fonction a pour but de donner le nombre de cellule du Cdataframe qui ont une valeur supérieur à x, avec x qui est
+ une valeur d'un type quelconque donné par l'utilisateur.
+  Elle prend en paramètre le Cdataframe, sa taille et une valeur chosit par l'utilisateur.
+----------------------------------------------------------------------------------------------------------------------*/
 int nombre_cellule_superieur_x(Colonne** CDataFrame, void* x, int taille){
     int cpt=0;
     for (int i = 0; i < taille; ++i) {
@@ -464,6 +602,15 @@ int nombre_cellule_superieur_x(Colonne** CDataFrame, void* x, int taille){
     }
     return cpt;
 }
+
+
+
+/*----------------------------------------------------------------------------------------------------------------------
+                                    FONCTION : nombre_cellule_inferieur_x
+Cette fonction a pour but de donner le nombre de cellule du Cdataframe qui ont une valeur inferieur à x, avec x qui est
+ une valeur d'un type quelconque donné par l'utilisateur.
+  Elle prend en paramètre le Cdataframe, sa taille et une valeur chosit par l'utilisateur.
+----------------------------------------------------------------------------------------------------------------------*/
 int nombre_cellule_inferieur_x(Colonne** CDataFrame, void* x,int taille){
     int cpt=0;
     for (int i = 0; i < taille; ++i) {
