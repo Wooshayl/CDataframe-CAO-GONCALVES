@@ -511,49 +511,19 @@ void renommer_titre(Colonne** CDataFrame, int position){
 Cette fonction vérifie l'existence d'une valeur dans le Dataframe
 Elle prend comme argument, CDataFrame, la valeur qu'on cherche et la taille
 ----------------------------------------------------------------------------------------------------------------------*/
-int existence_valeur(Colonne** CDataFrame,  void* valeur, int taille){
+int existence_valeur(Colonne** CDataFrame,  char * valeur, int taille){
+    char test[256];
     for (int i = 0; i < taille; ++i) {
-        switch(CDataFrame[i]->type_colonne){
-            case UINT:
-                for (int j = 0; j < CDataFrame[i]->taille_logique; ++j) {
-                    if(CDataFrame[i]->donnees[j]->uint_value == *(unsigned int*)valeur)
-                        return 1;
-                }
-                break;
-            case INT:
-                for (int j = 0; j < CDataFrame[i]->taille_logique; ++j) {
-                    if(CDataFrame[i]->donnees[j]->int_value == *(int*)valeur)
-                        return 1;
-                }
-                break;
-            case CHAR:
-                for (int j = 0; j < CDataFrame[i]->taille_logique; ++j) {
-                    if(CDataFrame[i]->donnees[j]->char_value == *(char*)valeur)
-                        return 1;
-                }
-                break;
-            case FLOAT:
-                for (int j = 0; j < CDataFrame[i]->taille_logique; ++j) {
-                    if(CDataFrame[i]->donnees[j]->float_value == *(float*)valeur)
-                        return 1;
-                }
-                break;
-            case DOUBLE:
-                for (int j = 0; j < CDataFrame[i]->taille_logique; ++j) {
-                    if(CDataFrame[i]->donnees[j]->double_value == *(double*)valeur)
-                        return 1;
-                }
-                break;
-            case STRING:
-                for (int j = 0; j < CDataFrame[i]->taille_logique; ++j) {
-                    if(strcmp(CDataFrame[i]->donnees[j]->string_value, (char*)valeur))
-                        return 1;
-                }
-                break;
-            default:
-                break;
+        for (int j = 0; j < CDataFrame[i]->taille_logique; ++j){
+            convertir_valeur(CDataFrame[i],j,test,256);
+            //printf("\nAAA %s AAA\n",test);
+            if (strcmp(test,valeur) == 0){
+                //printf("YAYAYA");
+                return 1;
+            }
         }
     }
+
     return 0;
 }
 
@@ -562,30 +532,30 @@ int existence_valeur(Colonne** CDataFrame,  void* valeur, int taille){
                                     FONCTION : changement_valeur
 Cette fonction à pour role de changer une valeur à une position précise dans le Dataframe.
 ----------------------------------------------------------------------------------------------------------------------*/
-void changement_valeur(Colonne** CDataFrame, int colonne, int ligne, void * valeur){
+void changement_valeur(Colonne** CDataFrame, int colonne, int ligne, COL_TYPE * valeur){
     switch(CDataFrame[colonne]->type_colonne){
         case UINT:
-            CDataFrame[colonne]->donnees[ligne]->uint_value = *(unsigned int*)valeur;
+            CDataFrame[colonne]->donnees[ligne]->uint_value = valeur->uint_value;
             break;
         case INT:
-            CDataFrame[colonne]->donnees[ligne]->int_value = *(int*)valeur;
+            CDataFrame[colonne]->donnees[ligne]->int_value = valeur->int_value;
             break;
         case CHAR:
-            CDataFrame[colonne]->donnees[ligne]->char_value = *(char*)valeur;
+            CDataFrame[colonne]->donnees[ligne]->char_value = valeur->char_value;
             break;
         case FLOAT:
-            CDataFrame[colonne]->donnees[ligne]->float_value = *(float*)valeur;
+            CDataFrame[colonne]->donnees[ligne]->float_value = valeur->float_value;
             break;
         case DOUBLE:
-            CDataFrame[colonne]->donnees[ligne]->double_value = *(double*)valeur;
+            CDataFrame[colonne]->donnees[ligne]->double_value = valeur->double_value;
             break;
         case STRING:
-            strcpy(CDataFrame[colonne]->donnees[ligne]->string_value, (char*)valeur);
+            strcpy(CDataFrame[colonne]->donnees[ligne]->string_value, valeur->string_value);
             break;
         default:
             break;
     }
-    CDataFrame[colonne]->donnees[ligne] = &valeur;//je sais pas
+    return;
 }
 
 
