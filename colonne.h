@@ -1,8 +1,10 @@
-
-#ifndef CDDATAFRAME_COLUMN_H
-#define CDDATAFRAME_COLUMN_H
+/*======================================================================================================================
+                                CDataframe par Lilian CAO et Valentin GONCALVES
+Ce fichier contient les prototyeps des fonctions de 'colonne.c'.
+======================================================================================================================*/
+#ifndef CDDATAFRAME_COLONNE_H
+#define CDDATAFRAME_COLONNE_H
 #define REALOC_SIZE 256
-
 #define ASC 0
 #define DESC 1
 
@@ -32,16 +34,7 @@ typedef struct {
     unsigned int taille_physique;
     unsigned int taille_logique;
     unsigned long long int* index;
-
-
-    // index valid
-    // 0 : no index
-    // -1 : invalid index
-    // 1 : valid index
     int valid_index;
-    // direction de tri Ascendant ou Déscendant
-    // 0 : ASC
-    // 1 : DESC
     int sort_dir;
 }Colonne;
 
@@ -62,4 +55,4 @@ void efface_index(Colonne* col);
 int check_index(Colonne* col);
 void update_index(Colonne *col);
 int recherche_valeur_dans_colonne(Colonne *col, void *val);
-#endif //CDDATAFRAME_COLUMN_H
+#endif //CDDATAFRAME_COLONNE_H
