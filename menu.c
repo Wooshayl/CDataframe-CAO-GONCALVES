@@ -227,6 +227,7 @@ void tri_menu(Colonne** CDataFrame, int taille) {
     printf("[5] Mettre à jour index d'une colonne\n");
     printf("[6] Effacer l'index d'une colonne\n");
     printf("[7] Check l'index d'une colonne au choix\n");
+    printf("[8] Rechercher valeur avec recherche dichotomie\n");
     scanf("%d", &test);
     getchar();
     switch (test) {
@@ -284,6 +285,57 @@ void tri_menu(Colonne** CDataFrame, int taille) {
             printf("De quelle colonne voulez vous verifier l'index?\n");
             scanf("%d", &choix_check);
             check_index(CDataFrame[choix_check]);
+            menu_global(CDataFrame, taille);
+        }
+        case 8: {
+            COL_TYPE valeur_c8;
+
+            int choix_colonne=0;
+
+            char strr[256];
+            printf("Quelle colonne voulez vous chercher?\n");
+            scanf("%d", &choix_colonne);
+            getchar();
+            switch (CDataFrame[choix_colonne]->type_colonne){
+                case UINT:
+                    printf("Attention, colonne de type Entier Naturel!");
+                    printf("\nChoisissez une valeur qui correspond au type de la colonne:\n");
+                    scanf("%d", &(valeur_c8.uint_value));
+                    getchar();
+                    break;
+                case INT:
+                    printf("Attention, colonne de type Entier Relatif!");
+                    printf("\nChoisissez une valeur qui correspond au type de la colonne:\n");
+                    scanf("%d", &(valeur_c8.int_value));
+                    getchar();
+                    break;
+                case CHAR:
+                    printf("Attention, colonne de type Caractère");
+                    printf("\nChoisissez une valeur qui correspond au type de la colonne:\n");
+                    scanf("%c", &(valeur_c8.char_value));
+                    getchar();
+                    break;
+                case FLOAT:
+                    printf("Attention, colonne de type Flottant");
+                    printf("\nChoisissez une valeur qui correspond au type de la colonne:\n");
+                    scanf("%f", &(valeur_c8.float_value));
+                    getchar();
+                    break;
+                case DOUBLE:
+                    printf("Attention, colonne de type Double");
+                    printf("\nChoisissez une valeur qui correspond au type de la colonne:\n");
+                    scanf("%lf", &(valeur_c8.double_value));
+                    getchar();
+                    break;
+                case STRING:
+                    printf("Attention, colonne de type Chaine de Caractère");
+                    gets(strr);
+                    break;
+                default:
+                    printf("Erreur 1");
+                    exit(1);
+            }
+            recherche_valeur_dans_colonne(CDataFrame[choix_colonne], &valeur_c8);
             menu_global(CDataFrame, taille);
         }
         default:
