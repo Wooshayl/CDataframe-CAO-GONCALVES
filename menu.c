@@ -42,8 +42,6 @@ void option_affichage_dataframe(Colonne** CDataFrame, int taille){
             }
             menu_global(CDataFrame, taille);
     }
-
-
 }
 
 
@@ -60,7 +58,7 @@ void modification_Dataframe(Colonne** CDataFrame, int taille){
     printf("Que voulez-vous faire :\n[1]Ajouter une ligne de valeurs au CDataframe\n");
     printf("[2]Supprimer la dernière ligne de valeurs du CDataframe\n");
     printf("[3] Ajouter une colonne au CDataframes\n");
-    printf("[4] Supprimer une colonne du CDataframe\n");
+    printf("[4] Supprimer la dernière colonne du CDataframe\n");
     printf("[5] Renommer le titre d’une colonne du CDataframe\n");
     printf("[6] Vérifier l’existence d’une valeur (recherche) dans le CDataframe\n");
     printf("[7] Remplacer la valeur se trouvant dans une cellule du CDataframe\n");
@@ -78,7 +76,7 @@ void modification_Dataframe(Colonne** CDataFrame, int taille){
             ajouter_colonne_CDataframe(&CDataFrame, &taille);
             menu_global(CDataFrame, taille);
         case 4:
-            //supprimer_colonne_CDataframe(CDataFrame);
+            supprimer_colonne_CDataframe(&CDataFrame, &taille);
             menu_global(CDataFrame, taille);
         case 5:
             printf("Quel est la position de la colonne que vous voulez renommer ?");
@@ -89,12 +87,62 @@ void modification_Dataframe(Colonne** CDataFrame, int taille){
         case 6:
             printf("Quelle est la valeur dont vous voulez vérifier l'existence ?");
             scanf("%s", valeur);
-            if (existence_valeur(CDataFrame, valeur, taille))printf("Elle existe ! \n");
+            getchar();
+            if (existence_valeur(CDataFrame, valeur, taille))printf("Elle existe ! %d\n", existence_valeur(CDataFrame, valeur, taille));
             else printf("Elle n'existe pas ! \n");
             menu_global(CDataFrame, taille);
-        case 7:
-            //changement_valeur(CDataFrame)
-            menu_global(CDataFrame, taille);
+        case 7:{
+            int ligne_c7=0,colonne_c7=0;
+            COL_TYPE valeur_c7;
+            valeur_c7.int_value = 0;
+            char* string_uti;
+            printf("Choisissez une colonne:\n");
+            scanf("%d", &colonne_c7);
+            getchar();
+            printf("Choisissez une ligne:\n");
+            scanf("%d", &ligne_c7);
+            getchar();
+            switch (CDataFrame[colonne_c7]->type_colonne){
+                case UINT:
+                    printf("Attention, colonne de type Entier Naturel!");
+                    printf("\nChoisissez une valeur qui correspond au type de la colonne:\n");
+                    scanf("%d", &(valeur_c7.uint_value));
+                    getchar();
+                    break;
+                case INT:
+                    printf("Attention, colonne de type Entier Relatif!");
+                    printf("\nChoisissez une valeur qui correspond au type de la colonne:\n");
+                    scanf("%d", &(valeur_c7.int_value));
+                    getchar();
+                    break;
+                case CHAR:
+                    printf("Attention, colonne de type Caractère");
+                    printf("\nChoisissez une valeur qui correspond au type de la colonne:\n");
+                    scanf("%c", &(valeur_c7.char_value));
+                    getchar();
+                    break;
+                case FLOAT:
+                    printf("Attention, colonne de type Flottant");
+                    printf("\nChoisissez une valeur qui correspond au type de la colonne:\n");
+                    scanf("%f", &(valeur_c7.float_value));
+                    getchar();
+                    break;
+                case DOUBLE:
+                    printf("Attention, colonne de type Double");
+                    printf("\nChoisissez une valeur qui correspond au type de la colonne:\n");
+                    scanf("%lf", &(valeur_c7.double_value));
+                    getchar();
+                    break;
+                case STRING:
+                    printf("Attention, colonne de type Chaine de Caractère");
+                    gets(string_uti);
+                    break;
+                default:
+                    printf("Erreur 1");
+                    exit(1);
+            }
+            changement_valeur(CDataFrame,colonne_c7,ligne_c7,&valeur_c7);
+            menu_global(CDataFrame, taille);}
         case 8:
             afficher_nom_colonne(CDataFrame,taille);
             menu_global(CDataFrame, taille);
@@ -164,6 +212,92 @@ void analyse_statistique(Colonne** CDataFrame, int taille){
     }
 }
 
+/*----------------------------------------------------------------------------------------------------------------------
+                                    FONCTION : menu_global
+Cette fonction est un menu qui contient les fonctions des autres sous menus.
+Elle prend en paramètre le Dataframe et sa taille.
+ Elle ne renvoit rien puisque c'est une fonction d'affichage.
+----------------------------------------------------------------------------------------------------------------------*/
+void tri_menu(Colonne** CDataFrame, int taille) {
+    int test;
+    printf("Que voulez-vous faire :\n[1] Afficher le Dataframe par index\n");
+    printf("[2] Trier tout le Dataframe par ordre croissant\n");
+    printf("[3] Trier tout le Dataframe par ordre décroissant\n");
+    printf("[4] Trier seulement 1 colonne au choix \n");
+    printf("[5] Mettre à jour index d'une colonne\n");
+    printf("[6] Effacer l'index d'une colonne\n");
+    printf("[7] Check l'index d'une colonne au choix\n");
+    scanf("%d", &test);
+    getchar();
+    switch (test) {
+        case 1: {
+            int ok = 1;
+            for (int i = 0; i < taille; i++) {
+                if (CDataFrame[i]->index == NULL || CDataFrame[i]->valid_index != 1){
+                    printf("Le Dataframe n'est pas trié et ne peux pas etre afficher par l'index\n");
+                    ok = 0;
+                    break;
+                }
+            }
+            if (ok == 1) {
+                for (int i = 0; i < taille; i++) {
+                    afficher_col_index(CDataFrame[i]);
+                }
+            }
+            menu_global(CDataFrame, taille);
+        }
+        case 2:
+            for (int i = 0; i < taille; i++){
+                sort(CDataFrame[i],ASC);
+            }
+            menu_global(CDataFrame, taille);
+        case 3:
+            for (int i = 0; i < taille; i++){
+                sort(CDataFrame[i],DESC);
+            }
+            menu_global(CDataFrame, taille);
+        case 4: {
+            int choix_ordre=0, choix_colonne=0;
+            printf("De quelle ordre voulez vous triez? (0 = croissant, 1 = décroissant)\n");
+            scanf("%d", &choix_ordre);
+            getchar();
+            printf("Quelle colonne voulez vous trier?\n");
+            scanf("%d ", &choix_colonne);
+            getchar();
+            sort(CDataFrame[choix_colonne], choix_ordre);
+            menu_global(CDataFrame, taille);
+        }
+        case 5:
+            for (int i = 0; i < taille; i++) {
+                update_index(CDataFrame[i]);
+            }
+            menu_global(CDataFrame, taille);
+        case 6:{
+            int choix_eff=0;
+            printf("De quelle ordre voulez vous effacer l'index?\n");
+            scanf("%d", &choix_eff);
+            efface_index(CDataFrame[choix_eff]);
+            menu_global(CDataFrame, taille);
+        }
+        case 7: {
+            int choix_check = 0;
+            printf("De quelle colonne voulez vous verifier l'index?\n");
+            scanf("%d", &choix_check);
+            check_index(CDataFrame[choix_check]);
+            menu_global(CDataFrame, taille);
+        }
+        default:
+            printf("Ce choix n'est pas proposé, voulez-vous réessayer ?\n[1]Oui\t[2]Non\n");
+            scanf("%d", &test);
+            if(test==1)analyse_statistique(CDataFrame, taille);
+            else{
+                printf("Au revoir.");
+                break;
+            }
+            menu_global(CDataFrame, taille);
+    }
+
+}
 
 
 /*----------------------------------------------------------------------------------------------------------------------
@@ -175,9 +309,10 @@ Elle prend en paramètre le Dataframe et sa taille.
 void menu_global(Colonne** CDataFrame, int taille){
     int test;
     printf("Que voulez-vous faire :\n[1]Options d'affichage du dataframe\n");
-    printf("[2]Options de modification du dataframe\n");
+    printf("[2] Options de modification du dataframe\n");
     printf("[3] Analyses et Statistiques sur le dataframe\n");
-    printf("[4] Quitter l'application\n");
+    printf("[4] Options de Tri sur le dataframe\n");
+    printf("[5] Quitter l'application\n");
     scanf("%d", &test);
     getchar();
     switch (test) {
@@ -191,6 +326,9 @@ void menu_global(Colonne** CDataFrame, int taille){
             analyse_statistique(CDataFrame, taille);
             menu_global(CDataFrame, taille);
         case 4:
+            tri_menu(CDataFrame, taille);
+            menu_global(CDataFrame, taille);
+        case 5:
             printf("Au revoir");
             exit(0);
         default:
