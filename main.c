@@ -1,27 +1,23 @@
+/*======================================================================================================================
+                                CDataframe par Lilian CAO et Valentin GONCALVES
+Ce fichier permet de mettre en relation tout les autres fichiers pour une utilisation efficace du programme.
+======================================================================================================================*/
 #include <stdio.h>
 #include <stdlib.h>
 #include "colonne.h"
 #include "cdataframe.h"
+#include "menu.h"
+
 
 int main() {
-    //Creation d'une CDataFrame:
-    printf("Combien de colonnes voulez-vous ?");
-    int taille=0;
-    scanf("%d", &taille);
-    Colonne** Exemple_CDataFrame1 = remplissage_utilisateur_CDataframe(taille);
+    int test, taille_cdataframe;
+    printf("Bienvue dans le Cdataframe CAO/GONCALVES !\n");
+    printf("Cette application vous permettra de stocker et de manipuler des données.\n");
+    printf("Combien de colonnes voulez-vous ?\n");
+    scanf("%d", &taille_cdataframe);
+    Colonne **Cdataframe = remplissage_utilisateur_CDataframe(taille_cdataframe);
+    menu_global(Cdataframe, taille_cdataframe);
 
-    //Affichage des deux CDataFrame
-    affichage_cdatatframe(Exemple_CDataFrame1, taille);
-    //affichage_cdatatframe(Exemple_CDataFrame2);
-    printf("-----------------------fin\n");
-    //----Modifications----
-    ajouter_ligne_CDataframe(Exemple_CDataFrame1, 5, taille);
-    affichage_cdatatframe(Exemple_CDataFrame1, taille);
-    renommer_titre(Exemple_CDataFrame1, 0);
-    affichage_cdatatframe(Exemple_CDataFrame1, taille);
 
-    //Afficher infos:
-    afficher_nombre_ligne(Exemple_CDataFrame1);
-    printf("ok c bon baka");
-    afficher_nom_colonne(Exemple_CDataFrame1, taille);
+    return 0;
 }
