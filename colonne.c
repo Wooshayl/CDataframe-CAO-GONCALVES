@@ -827,7 +827,7 @@ int recherche_valeur_dans_colonne(Colonne *col, void *val){
                     } else if (col->donnees[col->index[milieu]]->int_value > *(int*)val){
                         droite = milieu - 1;
                     } else{
-                        printf("\ntrouvé @%d\n", milieu);
+                        printf("\ntrouvé à l'index%d\n", milieu);
                         return 1;
                     }
                 }
