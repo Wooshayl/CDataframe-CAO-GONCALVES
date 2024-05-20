@@ -109,12 +109,12 @@ int inserer_valeur(Colonne* colonne, void* valeur) {
     }
 
     //Applique le bon index
-    if (colonne->valid_index == 1){
-        colonne->valid_index = 1;
-    }else if (colonne->valid_index == -1){
+    if (colonne->valid_index == 1){ //si trié alors partiellement trié
         colonne->valid_index = -1;
-    }else{
+    }else if (colonne->valid_index == -1){ //si partiellement trié alors non trié
         colonne->valid_index = 0;
+    }else{
+        colonne->valid_index = 0;   //sinon ça reste pas trié
     }
     colonne->taille_logique++;
 
@@ -711,6 +711,7 @@ void sort(Colonne* col, int sort_dir){
         return;
     } else {
         printf("Valeur invalide");
+        return;
     }
 }
 
@@ -934,11 +935,11 @@ int recherche_valeur_dans_colonne(Colonne *col, void *val){
                     } else if (col->donnees[col->index[milieu]]->string_value[0] > *(char*)val){
                         droite = milieu - 1;
                     } else{
-                        printf("\ntrouvé @%d\n", milieu);
+                        printf("\ntrouvé à l'index : %d\n", milieu);
                         return 1;
                     }
                 }
-                printf("\npas trouvé");
+                printf("\nvaleur pas trouvé");
                 return 0;
             }
         case STRUCTURE:
